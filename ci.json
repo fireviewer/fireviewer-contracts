@@ -1,0 +1,14 @@
+{
+  "kind": "python",
+  "requirements": "requirements.ci.lock.txt",
+  "dependencies": [],
+  "tests": [
+    "tests"
+  ],
+  "migrations": false,
+  "typescript_package": true,
+  "producer_ui": false,
+  "limits": [
+    "CPU/offline code qualification only; no models, GPU, deployed services or native Unreal qualification."
+  ]
+}
