@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.cross_view_registration.v1",
+  "role": "cross_view_registration",
+  "execution_kind": "deterministic",
+  "model_binding": null,
+  "required_all": ["fire_point_pixel", "reference_bundle"],
+  "required_any": [],
+  "produces": ["spatial_matches", "camera_pose", "explicit_abstention"],
+  "minimum_output_any": ["spatial_matches", "camera_pose", "explicit_abstention"],
+  "instructions": [
+    "Match the evidence view to the immutable georeferenced reference bundle and solve a camera pose.",
+    "Persist inlier counts, reprojection error, model revision and reference bundle digest.",
+    "Reject ambiguous, degenerate or out-of-bounds solutions."
+  ],
+  "forbidden_outputs": [
+    "Do not accept a pose without numerical quality evidence.",
+    "Do not silently change CRS, reference bundle or image geometry."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 64,
+  "max_wall_time_seconds": 1200,
+  "max_repair_attempts": 0,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": true,
+  "downstream_roles": ["spatial_projection"]
+}

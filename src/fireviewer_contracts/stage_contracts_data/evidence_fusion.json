@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.evidence_fusion.v1",
+  "role": "evidence_fusion",
+  "execution_kind": "orchestration",
+  "model_binding": null,
+  "required_all": [],
+  "required_any": ["factual_observations", "source_candidates", "spatial_proposals"],
+  "produces": ["evidence_graph", "explicit_abstention"],
+  "minimum_output_any": ["evidence_graph", "explicit_abstention"],
+  "instructions": [
+    "Merge facts by incident day while preserving every source, license and consent boundary.",
+    "Detect duplicates and contradictions without selecting an unsupported winner.",
+    "Keep user, public and satellite provenance distinct in the resulting evidence graph."
+  ],
+  "forbidden_outputs": [
+    "Do not erase contradictory values or source timestamps.",
+    "Do not publish or approve a result automatically."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 1000,
+  "max_wall_time_seconds": 300,
+  "max_repair_attempts": 0,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": false,
+  "downstream_roles": ["situation_report"]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "fireviewer.geo-contract.v1",
+  "version": "1.0.0",
+  "profile": "france-mainland",
+  "horizontalCrs": "EPSG:2154",
+  "verticalDatum": "NGF-IGN69",
+  "units": "metre",
+  "coordinates": ["east", "north", "height"],
+  "vectorExchange": "RFC7946-WGS84-longitude-latitude",
+  "timeZone": "UTC",
+  "classifications": ["observed", "external-data", "ai-result", "fireviewer-calculation", "estimate", "hypothesis", "unverified"],
+  "productionArtifacts": false
+}

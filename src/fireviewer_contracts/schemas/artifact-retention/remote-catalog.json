@@ -1,0 +1,96 @@
+{
+  "schema": "fireviewer.remote-artifact-catalog.v1",
+  "artifacts": [
+    {
+      "local_path": "data/training/rfdetr-small-ground-premium-v1/checkpoint_0.ckpt",
+      "repo_id": "fireviewer/fireviewer-legacy-models",
+      "repo_type": "model",
+      "revision": "19a3b90488927d8a4eabc1a80b17f25c60ec7a0a",
+      "path": "models/rfdetr-small-ground-premium-v1-incomplete/epoch-000-checkpoint/artifacts/checkpoint_0.ckpt",
+      "byte_count": 509619409,
+      "representative_read_checked": true
+    },
+    {
+      "local_path": "data/releases/rfdetr-small-ground-elite-fire-smoke-v1/checkpoint_best_total.pth",
+      "repo_id": "fireviewer/rf-detr-small-ground-elite-fire-smoke-v1",
+      "repo_type": "model",
+      "revision": "5d8f7f7aad6f07e8cf78b9eeb2730b9185434354",
+      "path": "checkpoint_best_total.pth",
+      "byte_count": 127347251,
+      "representative_read_checked": true
+    },
+    {
+      "local_path": "data/releases/rfdetr-small-ground-elite-fire-smoke-v1/rfdetr-small.onnx",
+      "repo_id": "fireviewer/rf-detr-small-ground-elite-fire-smoke-v1",
+      "repo_type": "model",
+      "revision": "5d8f7f7aad6f07e8cf78b9eeb2730b9185434354",
+      "path": "rfdetr-small.onnx",
+      "byte_count": 114585953,
+      "representative_read_checked": true
+    },
+    {
+      "local_path": "data/exports/rf-detr-large-ground-fire-smoke-v2-release/checkpoint_best_total.pth",
+      "repo_id": "fireviewer/rf-detr-large-ground-fire-smoke-v2",
+      "repo_type": "model",
+      "revision": "28eddfb9369803c86b39a097178dba8f3aad3da5",
+      "path": "checkpoint_best_total.pth",
+      "byte_count": 133242107,
+      "representative_read_checked": true
+    },
+    {
+      "local_path": "data/exports/rf-detr-large-ground-fire-smoke-v2-release/rfdetr-large.onnx",
+      "repo_id": "fireviewer/rf-detr-large-ground-fire-smoke-v2",
+      "repo_type": "model",
+      "revision": "28eddfb9369803c86b39a097178dba8f3aad3da5",
+      "path": "rfdetr-large.onnx",
+      "byte_count": 120532685,
+      "representative_read_checked": true
+    }
+  ],
+  "third_party_pointers": [
+    {
+      "local_path": "data/models/romav2-v2.0.1/romav2.0.1.pt",
+      "source": "https://github.com/Parskatt/RoMa/releases/tag/v2.0.1",
+      "revision": "v2.0.1",
+      "redistributed": false
+    },
+    {
+      "local_path": "data/models/dfine-xlarge-obj365-a99923ec/model.safetensors",
+      "source": "https://huggingface.co/ustc-community/dfine-xlarge-obj365",
+      "revision": "a99923ec",
+      "redistributed": false
+    }
+  ],
+  "datasets": [
+    {
+      "local_path": "data/campaigns/dinov3-multitask-fireviewer-v4",
+      "repo_id": "fireviewer/dinov3-multitask-fireviewer-v4-dataset",
+      "repo_type": "dataset",
+      "revision": "cb317d8dbc04f69ca2f4e593da7c05dba215c035",
+      "path": "manifest.json",
+      "derived_path": "derived/derived-materialization.tar",
+      "derived_byte_count": 288052736,
+      "remote_file_count": 20,
+      "representative_read_checked": true,
+      "raw_third_party_sources_redistributed": false
+    },
+    {
+      "local_path": "data/campaigns/dinov3-multitask-fireviewer-v4/sources/pyronear-pyro-sdis",
+      "repo_id": "pyronear/pyro-sdis",
+      "repo_type": "dataset",
+      "revision": "a1e553ec4d806f71fc6db744cc22bc3469487382",
+      "path": "data/",
+      "byte_count": 3284066553,
+      "representative_read_checked": true
+    },
+    {
+      "local_path": "data/campaigns/dinov3-multitask-fireviewer-v4/sources/fireviewer-v3-baseline",
+      "repo_id": "fireviewer/dinov3-multitask-fireviewer-v3-dataset",
+      "repo_type": "dataset",
+      "revision": "1485adf6bbe6d9d93174dac44a2bbac605559c2e",
+      "path": "dataset-info.json",
+      "byte_count": 590174357,
+      "representative_read_checked": true
+    }
+  ]
+}

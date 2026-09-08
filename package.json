@@ -1,0 +1,17 @@
+{
+  "name": "@fireviewer/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./typescript/index.ts",
+    "./schemas/*": "./src/fireviewer_contracts/schemas/*"
+  },
+  "files": [
+    "typescript",
+    "src/fireviewer_contracts/schemas",
+    "schemas.lock.json",
+    "LICENSE",
+    "NOTICE.md"
+  ]
+}

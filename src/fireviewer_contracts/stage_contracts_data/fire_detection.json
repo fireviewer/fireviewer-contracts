@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.fire_detection.v1",
+  "role": "fire_detection",
+  "execution_kind": "model",
+  "model_binding": "fire_detection",
+  "required_all": ["visual_input"],
+  "required_any": [],
+  "produces": ["selected_visual", "detection_regions", "explicit_abstention"],
+  "minimum_output_any": ["selected_visual", "detection_regions", "explicit_abstention"],
+  "instructions": [
+    "Rank images and video frames for downstream analysis without deciding whether the incident exists.",
+    "Keep temporal and wide-view context even when no target box is detected.",
+    "Return normalized regions only for directly visible fire, smoke, vehicles or aircraft."
+  ],
+  "forbidden_outputs": [
+    "Do not create geographic coordinates, a fire perimeter or a situation report.",
+    "Do not discard every frame merely because the detector score is low."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 256,
+  "max_wall_time_seconds": 600,
+  "max_repair_attempts": 0,
+  "failure_policy": "continue_degraded",
+  "skip_when_not_applicable": true,
+  "downstream_roles": ["visual_grounding", "multimodal_extraction", "fire_pointing"]
+}

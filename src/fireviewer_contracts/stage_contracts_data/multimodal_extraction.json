@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.multimodal_extraction.v1",
+  "role": "multimodal_extraction",
+  "execution_kind": "model",
+  "model_binding": "multimodal_extraction",
+  "required_all": [],
+  "required_any": ["transcript", "text_input", "selected_visual"],
+  "produces": ["factual_observations", "explicit_abstention"],
+  "minimum_output_any": ["factual_observations", "explicit_abstention"],
+  "instructions": [
+    "Extract only facts directly visible, explicitly written or explicitly spoken in supplied evidence.",
+    "Link every fact to an evidence identifier and preserve contradictions for later fusion.",
+    "Return an explicit abstention when the evidence cannot support a factual observation."
+  ],
+  "forbidden_outputs": [
+    "Do not infer geographic coordinates, a perimeter, an evacuation count or deployed resources.",
+    "Do not turn predictions, rumours or later retrospective information into facts for the analysis day."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 256,
+  "max_wall_time_seconds": 1200,
+  "max_repair_attempts": 1,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": false,
+  "downstream_roles": ["evidence_fusion", "situation_report"]
+}

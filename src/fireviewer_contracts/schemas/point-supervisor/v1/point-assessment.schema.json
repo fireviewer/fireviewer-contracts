@@ -1,0 +1,497 @@
+{
+  "$defs": {
+    "AssessmentSubscores": {
+      "additionalProperties": false,
+      "properties": {
+        "camera_geo": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Camera Geo"
+        },
+        "history": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "History"
+        },
+        "satellite": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Satellite"
+        },
+        "text_sources": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text Sources"
+        },
+        "visual": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Visual"
+        }
+      },
+      "title": "AssessmentSubscores",
+      "type": "object"
+    },
+    "CandidatePoint": {
+      "additionalProperties": false,
+      "description": "Immutable upstream spatial hypothesis; no supervising model may create it.",
+      "properties": {
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "phenomenon": {
+          "enum": [
+            "active_fire_point",
+            "smoke_origin"
+          ],
+          "title": "Phenomenon",
+          "type": "string"
+        },
+        "point_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Point Id",
+          "type": "string"
+        },
+        "radius_m": {
+          "exclusiveMinimum": 0,
+          "maximum": 1000000,
+          "title": "Radius M",
+          "type": "number"
+        },
+        "source_candidate_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Source Candidate Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "point_id",
+        "phenomenon",
+        "longitude",
+        "latitude",
+        "radius_m",
+        "source_candidate_ids"
+      ],
+      "title": "CandidatePoint",
+      "type": "object"
+    },
+    "CompetingPointJsonV1": {
+      "additionalProperties": false,
+      "description": "Standalone alternative point JSON that never replaces its source document.",
+      "properties": {
+        "correction_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Correction Id",
+          "type": "string"
+        },
+        "event_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 512,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "point": {
+          "$ref": "#/$defs/CandidatePoint"
+        },
+        "reason_codes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "relationship": {
+          "const": "competes_with_source",
+          "default": "competes_with_source",
+          "title": "Relationship",
+          "type": "string"
+        },
+        "schema": {
+          "const": "fireviewer.competing-point-correction.v1",
+          "default": "fireviewer.competing-point-correction.v1",
+          "title": "Schema",
+          "type": "string"
+        },
+        "source_bundle_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Bundle Sha256",
+          "type": "string"
+        },
+        "source_mutation_allowed": {
+          "const": false,
+          "default": false,
+          "title": "Source Mutation Allowed",
+          "type": "boolean"
+        },
+        "source_point_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Source Point Id",
+          "type": "string"
+        },
+        "state": {
+          "const": "proposed",
+          "default": "proposed",
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "correction_id",
+        "event_id",
+        "source_point_id",
+        "source_bundle_sha256",
+        "point",
+        "reason_codes"
+      ],
+      "title": "CompetingPointJsonV1",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "ProviderRun": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Config",
+          "type": "object"
+        },
+        "cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Usd"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "input_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Id"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Version"
+        },
+        "provider_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "provider_version": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Provider Version",
+          "type": "string"
+        },
+        "runtime_ms": {
+          "minimum": 0,
+          "title": "Runtime Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider_id",
+        "provider_version",
+        "input_hash",
+        "runtime_ms",
+        "generated_at"
+      ],
+      "title": "ProviderRun",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Advisory evidence assessment with no coordinate or review authority.",
+  "properties": {
+    "assessment_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "bundle_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Bundle Sha256",
+      "type": "string"
+    },
+    "calibrated_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Calibrated Confidence"
+    },
+    "calibrator_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Calibrator Id"
+    },
+    "competing_point_json": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CompetingPointJsonV1"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "contradicting_evidence_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 512,
+      "title": "Contradicting Evidence Ids",
+      "type": "array"
+    },
+    "event_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "geometry_mutation_allowed": {
+      "const": false,
+      "default": false,
+      "title": "Geometry Mutation Allowed",
+      "type": "boolean"
+    },
+    "hard_contradiction_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Hard Contradiction Codes",
+      "type": "array"
+    },
+    "missing_evidence_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Missing Evidence Codes",
+      "type": "array"
+    },
+    "model_confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Model Confidence",
+      "type": "number"
+    },
+    "needs_human_review": {
+      "default": true,
+      "title": "Needs Human Review",
+      "type": "boolean"
+    },
+    "point_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Point Id",
+      "type": "string"
+    },
+    "prompt_version": {
+      "maxLength": 255,
+      "minLength": 1,
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "provider_run": {
+      "$ref": "#/$defs/ProviderRun"
+    },
+    "reason_codes": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "release_status": {
+      "enum": [
+        "eligible_for_automatic_publication",
+        "held_for_review"
+      ],
+      "title": "Release Status",
+      "type": "string"
+    },
+    "schema": {
+      "const": "fireviewer.point-assessment.v1",
+      "default": "fireviewer.point-assessment.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "subscores": {
+      "$ref": "#/$defs/AssessmentSubscores"
+    },
+    "supervisor_mode": {
+      "enum": [
+        "managed_vl",
+        "simulated"
+      ],
+      "title": "Supervisor Mode",
+      "type": "string"
+    },
+    "supporting_evidence_ids": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 512,
+      "title": "Supporting Evidence Ids",
+      "type": "array"
+    },
+    "verdict": {
+      "enum": [
+        "accept",
+        "reject",
+        "abstain"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "event_id",
+    "point_id",
+    "bundle_sha256",
+    "verdict",
+    "model_confidence",
+    "reason_codes",
+    "release_status",
+    "supervisor_mode",
+    "provider_run",
+    "prompt_version"
+  ],
+  "title": "PointAssessmentV1",
+  "type": "object"
+}

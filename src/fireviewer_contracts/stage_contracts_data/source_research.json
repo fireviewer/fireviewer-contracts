@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.source_research.v1",
+  "role": "source_research",
+  "execution_kind": "model",
+  "model_binding": "source_research",
+  "required_all": ["research_request", "time_cutoff", "network_broker"],
+  "required_any": [],
+  "produces": ["source_candidates", "explicit_abstention"],
+  "minimum_output_any": ["source_candidates", "explicit_abstention"],
+  "instructions": [
+    "Plan searches for the incident and analysis day through the structured broker tools only.",
+    "Retain publication and acquisition dates, canonical URLs, source policy and provenance.",
+    "Exclude any source published after the configured historical cutoff."
+  ],
+  "forbidden_outputs": [
+    "Do not open an Internet socket directly or fetch a domain outside the allowlist.",
+    "Do not treat a search snippet as verified evidence or republish third-party media."
+  ],
+  "max_input_items": 1,
+  "max_output_items_per_input": 128,
+  "max_wall_time_seconds": 900,
+  "max_repair_attempts": 1,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": false,
+  "downstream_roles": ["multimodal_extraction", "evidence_fusion"]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.spatial_projection.v1",
+  "role": "spatial_projection",
+  "execution_kind": "deterministic",
+  "model_binding": null,
+  "required_all": ["fire_point_pixel", "camera_pose", "terrain_reference"],
+  "required_any": [],
+  "produces": ["spatial_proposals", "explicit_abstention"],
+  "minimum_output_any": ["spatial_proposals", "explicit_abstention"],
+  "instructions": [
+    "Project the selected pixel through the solved camera and intersect the first visible terrain surface.",
+    "Transform coordinates explicitly through the configured CRS chain and calculate an accuracy budget.",
+    "Abstain when the ray misses, intersects behind the camera or exceeds quality thresholds."
+  ],
+  "forbidden_outputs": [
+    "Do not let a language or vision model invent geographic coordinates.",
+    "Do not return coordinates without the reference bundle digest and uncertainty codes."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 64,
+  "max_wall_time_seconds": 300,
+  "max_repair_attempts": 0,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": true,
+  "downstream_roles": ["evidence_fusion", "situation_report"]
+}

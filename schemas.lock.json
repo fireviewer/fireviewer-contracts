@@ -1,0 +1,120 @@
+{
+  "version": "0.1.0",
+  "resources": [
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-ai-worker\\contracts\\agent-worker\\v2\\examples\\valid-input.json",
+      "path": "agent-worker/v2/examples/valid-input.json",
+      "sha256": "466ff98d2a240375bdf4cfe55db8054bcf5d4b20afbec6ef13c58b60450324ba"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-ai-worker\\contracts\\agent-worker\\v2\\examples\\valid-output.json",
+      "path": "agent-worker/v2/examples/valid-output.json",
+      "sha256": "38389f01d3a031ffab2b8ab4dbc703735c17ba8c0e12b264a8275f0559a7f738"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-ai-worker\\contracts\\artifact-retention\\remote-catalog.json",
+      "path": "artifact-retention/remote-catalog.json",
+      "sha256": "85d9a774c34605dd4a6244fa5d96be6229595c4fa55f70bc1cb917be8bc7128f"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-ai-worker\\contracts\\geographic-hypotheses\\v1\\geographic-hypotheses.schema.json",
+      "path": "geographic-hypotheses/v1/geographic-hypotheses.schema.json",
+      "sha256": "75fac23f37eb84ef01742e33584c08971a88979be34fec3ee9a1b5cf95080484"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-ai-worker\\contracts\\point-supervisor\\v1\\point-assessment.schema.json",
+      "path": "point-supervisor/v1/point-assessment.schema.json",
+      "sha256": "4966c316ee931ffcd319e77ceec10426ea2e091da98f190c4b5b4b59c1a51d6c"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-ai-worker\\contracts\\point-supervisor\\v1\\point-evidence-bundle.schema.json",
+      "path": "point-supervisor/v1/point-evidence-bundle.schema.json",
+      "sha256": "b076cfa1cd75f65d1651f5bbfcb5696ab64b2c31768d3194ae57e1baa23ebf7f"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-ai-worker\\contracts\\point-supervisor\\v1\\README.md",
+      "path": "point-supervisor/v1/README.md",
+      "sha256": "5e4b5513eaad6b84147ac865d1f834e5fa33b40ebb5e9b7a9513e021d5af2036"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\viewer-manifest\\v2\\viewer-manifest.schema.json",
+      "path": "viewer-manifest/v2/viewer-manifest.schema.json",
+      "sha256": "eb358da2a348d4111b0f1cdc2bbff0a6b9518886a05191f231d26b7dc9d9ee26"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\viewer-manifest\\v2\\examples\\available.json",
+      "path": "viewer-manifest/v2/examples/available.json",
+      "sha256": "acaa1064ebf9d92f8e706fafcdac27c958879f381cc90dd02fd6e70caa34da42"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\viewer-manifest\\v2\\examples\\not_available.json",
+      "path": "viewer-manifest/v2/examples/not_available.json",
+      "sha256": "a90d41d0bf576e8d3ac952be606a56a53a572eb2982aeea697453c97822f3736"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\viewer-manifest\\v2\\examples\\withheld.json",
+      "path": "viewer-manifest/v2/examples/withheld.json",
+      "sha256": "4dc68e088e5f8242704061ca034cd0c4977cd565016f836afbaccaeb312813df"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\demo\\v1\\README.md",
+      "path": "demo/v1/README.md",
+      "sha256": "f1288f799e77e076cab7b7a7cbdb84c4e7b495f7da842781d35e91bc342a6d9d"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\demo\\v1\\seed-manifest.json",
+      "path": "demo/v1/seed-manifest.json",
+      "sha256": "399918039f07c78717595c329908e8fc87b383a4a2999f54a0d34e05860091b1"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\demo\\v1\\seed-manifest.sha256",
+      "path": "demo/v1/seed-manifest.sha256",
+      "sha256": "19bd7a5d7df605ed04fe85699737137c513df4416203cc392dcd5fda6b07bbbb"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\demo\\v1\\visibility-matrix.json",
+      "path": "demo/v1/visibility-matrix.json",
+      "sha256": "6f1878d3c315590b3ddfe4a34d2769f601213d48cabee614f042f256f939244d"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\vendor\\spatial-v1\\README.md",
+      "path": "spatial/v1/README.md",
+      "sha256": "f51a6cde8cc15c371c91d12a6225d3e18520ba8ac0ebb5d8150ebdee0b637d34"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\vendor\\spatial-v1\\spatial-contract.schema.json",
+      "path": "spatial/v1/spatial-contract.schema.json",
+      "sha256": "24c52b88edbed45929f464bc6d1105218ad70bda2f59de2ba7ac9ace6c9bc3e7"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\vendor\\spatial-v1\\fixtures\\enu-unity-points.json",
+      "path": "spatial/v1/fixtures/enu-unity-points.json",
+      "sha256": "e703f942d67b6e7d2766d7c15131b377daebfcd3197c135c9b450e94e87461ce"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\vendor\\spatial-v1\\fixtures\\spatial-snapshot.json",
+      "path": "spatial/v1/fixtures/spatial-snapshot.json",
+      "sha256": "472a15a04a7e1734d78ac6d83383abde8b597e4a6945f5e8e6530e089bf9a035"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\vendor\\spatial-v1\\fixtures\\zone-registry.json",
+      "path": "spatial/v1/fixtures/zone-registry.json",
+      "sha256": "34a5ebbc01c80a711b04f6f7c50cee4d9abcf6c322cf6f1315951fa03b6cd227"
+    },
+    {
+      "source": "restructuration-20260908\\checkouts\\fireviewer\\fireviewer-backend\\contracts\\vendor\\spatial-v1\\fixtures\\zone-revision.json",
+      "path": "spatial/v1/fixtures/zone-revision.json",
+      "sha256": "046652ad694feaaa639172b2e962e00653eb8216e6bbb53f0aa2a7436e716bb5"
+    },
+    {
+      "source": "fireviewer-geo-contracts\\geo-contract.v1.json",
+      "path": "geography/v1/geo-contract.v1.json",
+      "sha256": "c23e60460865fb5ac4add9064607d915b53edc5213d242bc685ea068a1431a29"
+    },
+    {
+      "source": "fireviewer-geo-contracts\\README.md",
+      "path": "geography/v1/README.md",
+      "sha256": "027713db8252ce28586fec354ece70d7f0f05dd9bd992cece36d5494e000ffac"
+    }
+  ]
+}

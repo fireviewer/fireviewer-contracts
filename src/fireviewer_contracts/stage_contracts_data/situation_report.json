@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.situation_report.v1",
+  "role": "situation_report",
+  "execution_kind": "orchestration",
+  "model_binding": null,
+  "required_all": ["evidence_graph"],
+  "required_any": [],
+  "produces": ["report_draft", "explicit_abstention"],
+  "minimum_output_any": ["report_draft", "explicit_abstention"],
+  "instructions": [
+    "Produce a private daily draft from cited evidence graph nodes only.",
+    "Separate confirmed facts, contradictions, unknowns and operational instructions.",
+    "Include progression, evacuations, deployed means, pollution alerts and public orders only when sourced."
+  ],
+  "forbidden_outputs": [
+    "Do not fill missing statistics or convert rumours into a situation update.",
+    "Do not publish the report or associated media before human validation."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 1000,
+  "max_wall_time_seconds": 300,
+  "max_repair_attempts": 0,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": false,
+  "downstream_roles": []
+}

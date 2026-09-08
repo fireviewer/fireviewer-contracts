@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.burned_area.v1",
+  "role": "burned_area",
+  "execution_kind": "model",
+  "model_binding": "burned_area",
+  "required_all": ["satellite_multispectral"],
+  "required_any": [],
+  "produces": ["burned_area_geometry", "explicit_abstention"],
+  "minimum_output_any": ["burned_area_geometry", "explicit_abstention"],
+  "instructions": [
+    "Run only on a georeferenced raster whose six bands are explicitly ordered BLUE, GREEN, RED, NIR_NARROW, SWIR_1, SWIR_2.",
+    "Return a source-space burned-area mask and its WGS84 polygon derived exclusively from the raster geotransform.",
+    "Preserve acquisition time, product identity, reference digest and uncertainty in every proposal.",
+    "Abstain when band order, raster georeferencing, cloud quality or model output is not defensible.",
+    "Treat absence or abstention as local to this auxiliary stage; preserve RGB satellite, thermal, hotspot, fusion and reporting paths."
+  ],
+  "forbidden_outputs": [
+    "Do not infer burned area from an RGB preview, screenshot or terrestrial photograph.",
+    "Do not treat a burn scar as a current active-fire front.",
+    "Do not invent a CRS, geotransform, band order or geographic polygon."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 64,
+  "max_wall_time_seconds": 1800,
+  "max_repair_attempts": 0,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": true,
+  "downstream_roles": ["evidence_fusion", "situation_report"]
+}

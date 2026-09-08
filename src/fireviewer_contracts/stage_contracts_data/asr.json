@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.asr.v1",
+  "role": "asr",
+  "execution_kind": "model",
+  "model_binding": "asr",
+  "required_all": ["audio_input"],
+  "required_any": [],
+  "produces": ["transcript", "explicit_abstention"],
+  "minimum_output_any": ["transcript", "explicit_abstention"],
+  "instructions": [
+    "Transcribe only audible speech from the supplied audio track.",
+    "Preserve timestamps and mark uncertain segments without completing inaudible words.",
+    "Return an explicit abstention when no intelligible speech is present."
+  ],
+  "forbidden_outputs": [
+    "Do not infer a location, fire perimeter, date, identity or operational fact from background noise.",
+    "Do not translate, summarize or rewrite the spoken content."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 10000,
+  "max_wall_time_seconds": 900,
+  "max_repair_attempts": 0,
+  "failure_policy": "continue_degraded",
+  "skip_when_not_applicable": true,
+  "downstream_roles": ["multimodal_extraction", "evidence_fusion"]
+}

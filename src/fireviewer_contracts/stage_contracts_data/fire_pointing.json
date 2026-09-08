@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "stage.fire_pointing.v1",
+  "role": "fire_pointing",
+  "execution_kind": "model",
+  "model_binding": "fire_pointing",
+  "required_all": ["selected_visual"],
+  "required_any": [],
+  "produces": ["fire_point_pixel", "explicit_abstention"],
+  "minimum_output_any": ["fire_point_pixel", "explicit_abstention"],
+  "instructions": [
+    "Return the normalized image pixel that best represents each directly visible active fire point.",
+    "Attach the exact evidence identifier and visual uncertainty to every point.",
+    "Abstain when smoke, terrain, darkness or framing prevents a defensible pixel selection."
+  ],
+  "forbidden_outputs": [
+    "Do not emit latitude, longitude, altitude, a camera pose or a geographic perimeter.",
+    "Do not place a point on smoke alone or on a location hidden behind terrain."
+  ],
+  "max_input_items": 32,
+  "max_output_items_per_input": 64,
+  "max_wall_time_seconds": 900,
+  "max_repair_attempts": 1,
+  "failure_policy": "human_review",
+  "skip_when_not_applicable": true,
+  "downstream_roles": ["cross_view_registration", "spatial_projection"]
+}

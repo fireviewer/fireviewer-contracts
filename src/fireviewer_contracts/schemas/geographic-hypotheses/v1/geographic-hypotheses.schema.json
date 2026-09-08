@@ -1,0 +1,428 @@
+{
+  "$defs": {
+    "GeographicAbstention": {
+      "additionalProperties": false,
+      "properties": {
+        "detection_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detection Id"
+        },
+        "media_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Media Id"
+        },
+        "observation_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observation Id"
+        },
+        "reason_codes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Reason Codes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reason_codes"
+      ],
+      "title": "GeographicAbstention",
+      "type": "object"
+    },
+    "GeographicHypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "camera_bearing_deg": {
+          "exclusiveMaximum": 360,
+          "minimum": 0,
+          "title": "Camera Bearing Deg",
+          "type": "number"
+        },
+        "camera_distance_m": {
+          "exclusiveMinimum": 0,
+          "maximum": 200000,
+          "title": "Camera Distance M",
+          "type": "number"
+        },
+        "detection_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Detection Id",
+          "type": "string"
+        },
+        "geometry_geojson": {
+          "additionalProperties": true,
+          "title": "Geometry Geojson",
+          "type": "object"
+        },
+        "geometry_mutation_allowed": {
+          "const": false,
+          "default": false,
+          "title": "Geometry Mutation Allowed",
+          "type": "boolean"
+        },
+        "horizontal_uncertainty_m": {
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Horizontal Uncertainty M",
+          "type": "number"
+        },
+        "hypothesis_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "media_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Media Id",
+          "type": "string"
+        },
+        "needs_human_review": {
+          "const": true,
+          "default": true,
+          "title": "Needs Human Review",
+          "type": "boolean"
+        },
+        "observation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "phenomenon": {
+          "enum": [
+            "active_fire_point",
+            "smoke_origin"
+          ],
+          "title": "Phenomenon",
+          "type": "string"
+        },
+        "reason_codes": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "score": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        },
+        "score_breakdown": {
+          "$ref": "#/$defs/GeographicScoreBreakdown"
+        },
+        "source_point_normalized": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Source Point Normalized",
+          "type": "array"
+        },
+        "supporting_reference_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Supporting Reference Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "observation_id",
+        "detection_id",
+        "media_id",
+        "phenomenon",
+        "longitude",
+        "latitude",
+        "geometry_geojson",
+        "horizontal_uncertainty_m",
+        "camera_bearing_deg",
+        "camera_distance_m",
+        "source_point_normalized",
+        "score",
+        "score_breakdown",
+        "supporting_reference_ids",
+        "reason_codes"
+      ],
+      "title": "GeographicHypothesis",
+      "type": "object"
+    },
+    "GeographicScoreBreakdown": {
+      "additionalProperties": false,
+      "properties": {
+        "camera_bearing": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Camera Bearing",
+          "type": "number"
+        },
+        "history_progression": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "History Progression"
+        },
+        "satellite": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Satellite",
+          "type": "number"
+        },
+        "temporal_alignment": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temporal Alignment"
+        },
+        "terrain_visibility": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Terrain Visibility",
+          "type": "number"
+        },
+        "visual": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Visual",
+          "type": "number"
+        }
+      },
+      "required": [
+        "visual",
+        "camera_bearing",
+        "terrain_visibility",
+        "satellite"
+      ],
+      "title": "GeographicScoreBreakdown",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "ProviderRun": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Config",
+          "type": "object"
+        },
+        "cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Usd"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "input_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Id"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Version"
+        },
+        "provider_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "provider_version": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Provider Version",
+          "type": "string"
+        },
+        "runtime_ms": {
+          "minimum": 0,
+          "title": "Runtime Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider_id",
+        "provider_version",
+        "input_hash",
+        "runtime_ms",
+        "generated_at"
+      ],
+      "title": "ProviderRun",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "abstentions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GeographicAbstention"
+      },
+      "maxItems": 2048,
+      "title": "Abstentions",
+      "type": "array"
+    },
+    "event_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "geometry_mutation_allowed": {
+      "const": false,
+      "default": false,
+      "title": "Geometry Mutation Allowed",
+      "type": "boolean"
+    },
+    "hypotheses": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GeographicHypothesis"
+      },
+      "maxItems": 2048,
+      "title": "Hypotheses",
+      "type": "array"
+    },
+    "needs_human_review": {
+      "const": true,
+      "default": true,
+      "title": "Needs Human Review",
+      "type": "boolean"
+    },
+    "provider_run": {
+      "$ref": "#/$defs/ProviderRun"
+    },
+    "schema": {
+      "const": "fireviewer.geographic-hypotheses.v1",
+      "default": "fireviewer.geographic-hypotheses.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_event_evidence_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Event Evidence Sha256",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "hypotheses",
+        "abstained"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_id",
+    "source_event_evidence_sha256",
+    "status",
+    "provider_run"
+  ],
+  "title": "GeographicHypothesisResultV1",
+  "type": "object"
+}

@@ -1,0 +1,894 @@
+{
+  "$defs": {
+    "CandidatePoint": {
+      "additionalProperties": false,
+      "description": "Immutable upstream spatial hypothesis; no supervising model may create it.",
+      "properties": {
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "phenomenon": {
+          "enum": [
+            "active_fire_point",
+            "smoke_origin"
+          ],
+          "title": "Phenomenon",
+          "type": "string"
+        },
+        "point_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Point Id",
+          "type": "string"
+        },
+        "radius_m": {
+          "exclusiveMinimum": 0,
+          "maximum": 1000000,
+          "title": "Radius M",
+          "type": "number"
+        },
+        "source_candidate_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Source Candidate Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "point_id",
+        "phenomenon",
+        "longitude",
+        "latitude",
+        "radius_m",
+        "source_candidate_ids"
+      ],
+      "title": "CandidatePoint",
+      "type": "object"
+    },
+    "GeographicReference": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_revision": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Artifact Revision",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "geometry_geojson": {
+          "additionalProperties": true,
+          "title": "Geometry Geojson",
+          "type": "object"
+        },
+        "horizontal_uncertainty_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Horizontal Uncertainty M"
+        },
+        "lineage_family_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lineage Family Id"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed At"
+        },
+        "reference_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Reference Id",
+          "type": "string"
+        },
+        "reference_kind": {
+          "enum": [
+            "satellite_hotspot",
+            "satellite_active_area",
+            "prior_active_point",
+            "prior_fire_front",
+            "prior_perimeter"
+          ],
+          "title": "Reference Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference_id",
+        "reference_kind",
+        "geometry_geojson",
+        "artifact_revision"
+      ],
+      "title": "GeographicReference",
+      "type": "object"
+    },
+    "GeospatialConsistencyCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Check Id",
+          "type": "string"
+        },
+        "check_type": {
+          "enum": [
+            "camera_distance",
+            "camera_bearing",
+            "line_of_sight",
+            "terrain_visibility",
+            "satellite_overlap",
+            "temporal_alignment",
+            "history_progression"
+          ],
+          "title": "Check Type",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "hard_constraint": {
+          "default": false,
+          "title": "Hard Constraint",
+          "type": "boolean"
+        },
+        "reason_code": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Reason Code",
+          "type": "string"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Score"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "contradicted",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "check_id",
+        "check_type",
+        "status",
+        "reason_code",
+        "evidence_ids"
+      ],
+      "title": "GeospatialConsistencyCheck",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "PointEvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Sha256"
+        },
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "evidence_type": {
+          "enum": [
+            "source",
+            "claim",
+            "media",
+            "visual_observation",
+            "satellite_observation",
+            "location_candidate",
+            "candidate_cluster",
+            "contradiction",
+            "uncertainty",
+            "prior_fire_state",
+            "geographic_reference"
+          ],
+          "title": "Evidence Type",
+          "type": "string"
+        },
+        "media_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Media Id"
+        },
+        "result_reference": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Result Reference"
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Id"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "evidence_type"
+      ],
+      "title": "PointEvidenceReference",
+      "type": "object"
+    },
+    "PriorFireStateReference": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_reference": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Artifact Reference",
+          "type": "string"
+        },
+        "artifact_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Sha256",
+          "type": "string"
+        },
+        "direction_consistency": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Direction Consistency"
+        },
+        "distance_to_candidate_m": {
+          "anyOf": [
+            {
+              "maximum": 2000000,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distance To Candidate M"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "read_only": {
+          "const": true,
+          "default": true,
+          "title": "Read Only",
+          "type": "boolean"
+        },
+        "state_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "State Id",
+          "type": "string"
+        },
+        "state_kind": {
+          "enum": [
+            "published_perimeter",
+            "active_points",
+            "situation_report"
+          ],
+          "title": "State Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state_id",
+        "state_kind",
+        "observed_at",
+        "artifact_reference",
+        "artifact_sha256"
+      ],
+      "title": "PriorFireStateReference",
+      "type": "object"
+    },
+    "ProviderRun": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Config",
+          "type": "object"
+        },
+        "cost_usd": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Usd"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "input_hash": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "model_id": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Id"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "maxLength": 255,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Version"
+        },
+        "provider_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "provider_version": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Provider Version",
+          "type": "string"
+        },
+        "runtime_ms": {
+          "minimum": 0,
+          "title": "Runtime Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider_id",
+        "provider_version",
+        "input_hash",
+        "runtime_ms",
+        "generated_at"
+      ],
+      "title": "ProviderRun",
+      "type": "object"
+    },
+    "RagContextExcerpt": {
+      "additionalProperties": false,
+      "properties": {
+        "center": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Center"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "document_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+            "type": "string"
+          },
+          "maxItems": 128,
+          "minItems": 1,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "evidence_type": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Evidence Type",
+          "type": "string"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed At"
+        },
+        "score": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        },
+        "text": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "document_id",
+        "evidence_type",
+        "text",
+        "score",
+        "evidence_ids",
+        "content_sha256"
+      ],
+      "title": "RagContextExcerpt",
+      "type": "object"
+    },
+    "UploadLocationEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "accuracy_m": {
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Accuracy M",
+          "type": "number"
+        },
+        "altitude_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Altitude M"
+        },
+        "altitude_uncertainty_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 10000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Altitude Uncertainty M"
+        },
+        "captured_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Captured At"
+        },
+        "heading_deg": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heading Deg"
+        },
+        "heading_uncertainty_deg": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 180,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heading Uncertainty Deg"
+        },
+        "horizontal_fov_deg": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 180,
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Horizontal Fov Deg"
+        },
+        "image_height_px": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Height Px"
+        },
+        "image_width_px": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Width Px"
+        },
+        "latitude": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Latitude",
+          "type": "number"
+        },
+        "location_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Location Id",
+          "type": "string"
+        },
+        "location_origin": {
+          "enum": [
+            "user_declared",
+            "human_confirmed",
+            "metadata"
+          ],
+          "title": "Location Origin",
+          "type": "string"
+        },
+        "longitude": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Longitude",
+          "type": "number"
+        },
+        "media_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+          "title": "Media Id",
+          "type": "string"
+        },
+        "pitch_deg": {
+          "anyOf": [
+            {
+              "maximum": 90,
+              "minimum": -90,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pitch Deg"
+        },
+        "roll_deg": {
+          "anyOf": [
+            {
+              "maximum": 180,
+              "minimum": -180,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Roll Deg"
+        },
+        "source_record_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Record Sha256",
+          "type": "string"
+        },
+        "vertical_fov_deg": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 180,
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vertical Fov Deg"
+        }
+      },
+      "required": [
+        "location_id",
+        "media_id",
+        "longitude",
+        "latitude",
+        "accuracy_m",
+        "location_origin",
+        "source_record_sha256"
+      ],
+      "title": "UploadLocationEvidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Read-only evidence dossier for one upstream spatial hypothesis.",
+  "properties": {
+    "assembler_run": {
+      "$ref": "#/$defs/ProviderRun"
+    },
+    "bundle_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "event_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "evidence_references": {
+      "items": {
+        "$ref": "#/$defs/PointEvidenceReference"
+      },
+      "maxItems": 2048,
+      "minItems": 1,
+      "title": "Evidence References",
+      "type": "array"
+    },
+    "geographic_references": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GeographicReference"
+      },
+      "maxItems": 512,
+      "title": "Geographic References",
+      "type": "array"
+    },
+    "geometry_mutation_allowed": {
+      "const": false,
+      "default": false,
+      "title": "Geometry Mutation Allowed",
+      "type": "boolean"
+    },
+    "geospatial_checks": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GeospatialConsistencyCheck"
+      },
+      "maxItems": 512,
+      "title": "Geospatial Checks",
+      "type": "array"
+    },
+    "missing_evidence_codes": {
+      "default": [],
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "type": "string"
+      },
+      "maxItems": 128,
+      "title": "Missing Evidence Codes",
+      "type": "array"
+    },
+    "needs_human_review": {
+      "default": true,
+      "title": "Needs Human Review",
+      "type": "boolean"
+    },
+    "point": {
+      "$ref": "#/$defs/CandidatePoint"
+    },
+    "prior_fire_states": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PriorFireStateReference"
+      },
+      "maxItems": 256,
+      "title": "Prior Fire States",
+      "type": "array"
+    },
+    "retrieved_context": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RagContextExcerpt"
+      },
+      "maxItems": 64,
+      "title": "Retrieved Context",
+      "type": "array"
+    },
+    "schema": {
+      "const": "fireviewer.point-evidence-bundle.v1",
+      "default": "fireviewer.point-evidence-bundle.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_event_evidence_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Event Evidence Sha256",
+      "type": "string"
+    },
+    "upload_locations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/UploadLocationEvidence"
+      },
+      "maxItems": 128,
+      "title": "Upload Locations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "event_id",
+    "point",
+    "evidence_references",
+    "source_event_evidence_sha256",
+    "assembler_run"
+  ],
+  "title": "PointEvidenceBundleV1",
+  "type": "object"
+}
