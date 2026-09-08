@@ -1,0 +1,2 @@
+# Preserve the bytes referenced by schemas.lock.json on every platform.
+src/fireviewer_contracts/schemas/** -text
