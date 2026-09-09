@@ -1,5 +1,5 @@
-Version 0.1.1
+Version 0.1.2
 
-Publication de la restructuration intégrée : package installable, dépendances internes finales verrouillées et manifeste sans fichiers cachés.
+Préserve les contrats éditoriaux du backend effectivement déployé : catalogue public, sources documentaires sans observation participative, précision à la journée et provenance de la chronologie. Les valeurs par défaut des anciens messages sont conservées.
 
-Les licences et attributions sont conservées. Qualification CPU et environnement isolé ; aucun déploiement de production ni validation GPU/native Unreal.
+Validation : 31 tests sur le package installé. Licences et attributions conservées.

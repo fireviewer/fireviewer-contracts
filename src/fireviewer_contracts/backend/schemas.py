@@ -329,7 +329,7 @@ class PublicSourceSummary(StrictModel):
     license: str | None = Field(default=None, max_length=255)
     external_reference: str | None = Field(default=None, max_length=2048)
     transformations: list[str] = Field(default_factory=list, max_length=20)
-    observation_count: int = Field(ge=1)
+    observation_count: int = Field(ge=0)
 
 
 class PublicOfficialResource(StrictModel):
@@ -401,6 +401,11 @@ class PublicTimelineEvent(StrictModel):
     kind: Literal["incident", "episode", "observation", "model", "operational"]
     label: str = Field(min_length=1, max_length=255)
     episode_id: str | None = None
+    date_precision: Literal["date", "datetime"] = "datetime"
+    record_type: Literal["event", "publication"] = "event"
+    source_id: str | None = None
+    source_name: str | None = None
+    source_url: str | None = None
 
 
 class PublicModelMetadata(StrictModel):
@@ -510,6 +515,7 @@ class PublicIncidentView(StrictModel):
     public_note: str | None = Field(default=None, max_length=500)
     status: IncidentStatus
     verification: Literal["verified", "corroborated", "review_required"]
+    verification_method: Literal["human", "documentary", "unspecified"] = "unspecified"
     freshness_at: datetime
     last_human_validation_at: datetime | None = None
     participatory_observation_count: int | None = Field(default=None, ge=1)
@@ -727,7 +733,7 @@ class AdminIncidentSourceWorkspaceItem(StrictModel):
     public_license: str | None = Field(default=None, max_length=255)
     public_reference_url: str | None = Field(default=None, max_length=2048)
     public_transformations: list[str] = Field(default_factory=list, max_length=20)
-    observation_count: int = Field(ge=1)
+    observation_count: int = Field(ge=0)
 
 
 class AdminIncidentMediaReference(StrictModel):
