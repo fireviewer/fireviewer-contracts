@@ -1,15 +1,17 @@
 # fireviewer-contracts
 
+> **Source active FV · private.** Contrats métier et géométrie partagée, modèles Python, types TypeScript et fixtures. Voir [où travailler, quoi commiter et comment reprendre](ORGANISATION.md).
+
 Versioned evidence and reconstruction contracts and bounded backend clients.
 
-Python package: `fireviewer_contracts`. Version: `0.1.0`.
+Python package: `fireviewer_contracts`. Version: `0.1.2`.
 
 ## Installation
 
 Install the versioned release wheels (including private FireViewer dependencies) from the release bundle. No sibling source checkout is required.
 
 ```sh
-python -m pip install --find-links /path/to/release/wheels fireviewer-contracts==0.1.0
+python -m pip install --find-links /path/to/release/wheels fireviewer-contracts==0.1.2
 python -m pytest tests -q
 ```
 
