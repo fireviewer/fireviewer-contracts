@@ -1,5 +1,17 @@
 # fireviewer-contracts
 
+## Repères documentaires — 19 septembre 2026
+
+- **Rôle :** Contrats versionnés d’évidence, géométrie, reconstruction et clients backend bornés.
+- **Statut :** Actif — package `fireviewer_contracts` v0.1.2 dans le README actuel.
+- **Entrées :** Schémas et contrats partagés.
+- **Sorties :** Modèles Python, types TypeScript, schemas lockés et fixtures.
+- **Limites :** Ne pas dupliquer les contrats ailleurs. Les IDs et formats compatibles ne se renomment pas pendant un simple nettoyage documentaire.
+
+[Fiche du dépôt](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/public/repositories/fireviewer-contracts.md) · [Architecture](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/public/ARCHITECTURE.md) · [Statuts et vocabulaire](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/public/STATUTS_ET_VOCABULAIRE.md).
+
+Cette revue documentaire ne renouvelle aucun test ni aucune réception. Les procédures, versions et preuves techniques ci-dessous conservent leur périmètre et leur date.
+
 > **Source active FV · private.** Contrats métier et géométrie partagée, modèles Python, types TypeScript et fixtures. Voir [où travailler, quoi commiter et comment reprendre](ORGANISATION.md).
 
 Versioned evidence and reconstruction contracts and bounded backend clients.
