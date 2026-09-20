@@ -141,8 +141,8 @@ PUBLIC_MODELS: tuple[ModelSpec, ...] = (
     ),
     ModelSpec(
         role="visual_grounding",
-        model_id="microsoft/Florence-2-large-ft",
-        revision="4a12a2b54b7016a48a22037fbd62da90cd566f2a",
+        model_id="florence-community/Florence-2-large-ft",
+        revision="26b734a54fdfbf9c398351eedfabb7f27fc470b7",
     ),
     ModelSpec(
         role="multimodal_extraction",
@@ -156,10 +156,12 @@ PUBLIC_MODELS: tuple[ModelSpec, ...] = (
     ),
 )
 
+# Compatibility name retained for callers. This is the explicit standard COCO
+# fallback: it does not contain fire/smoke classes and is not a trained FV model.
 DFINE_FIREVIEWER = ModelSpec(
     role="fire_detection",
-    model_id="fireviewer/dfine-xlarge-fire-smoke",
-    revision="3b3c2171ec78f3d33a9031df512a839e912b36f2",
+    model_id="ustc-community/dfine-xlarge-coco",
+    revision="ea4f6be7350bbe3c199ec6febc74168346cb5a68",
 )
 
 RTDETR_FIREVIEWER = ModelSpec(
@@ -170,13 +172,12 @@ RTDETR_FIREVIEWER = ModelSpec(
 # Legacy import kept temporarily while callers migrate to the explicit ensemble name.
 RTDETR_BASELINE = RTDETR_FIREVIEWER
 
-# The MVP uses the same pinned text model for source research and rare final
-# adjudication. It fits the A40 in BF16 and is loaded only after every stage
-# candidate has been serialized and released from VRAM.
+# Bonsai 2 replaces only the final consensus judge.
+# Source research remains Qwen3-14B. The judge loads after candidate VRAM release.
 CONSENSUS_JUDGE = ModelSpec(
     role="consensus_judge",
-    model_id="Qwen/Qwen3-14B",
-    revision="40c069824f4251a91eefaf281ebe4c544efd3e18",
+    model_id="prism-ml/Ternary-Bonsai-2-27B-gguf",
+    revision="6ed5e12bf84b7a63069882c91dd9e9218647d17b",
 )
 
 
@@ -280,7 +281,7 @@ def build_model_group_registry() -> dict[ModelRole, ModelGroupSpec]:
                 agreement_threshold=0.4,
                 disagreement_decision=ConsensusFailureDecision.HUMAN_REVIEW,
                 adjudicator=ModelCandidateSpec(
-                    candidate_id="fire_detection.qwen3_14b.judge",
+                    candidate_id="fire_detection.bonsai2_27b_ptq1.judge",
                     spec=CONSENSUS_JUDGE,
                     rank=3,
                 ),

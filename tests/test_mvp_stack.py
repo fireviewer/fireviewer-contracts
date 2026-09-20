@@ -15,15 +15,15 @@ from fireviewer_contracts.mvp_stack import (
 )
 
 
-def test_frozen_mvp_is_a40_only_and_fail_closed() -> None:
+def test_default_bonsai_profile_keeps_fail_closed_policies() -> None:
     stack = load_mvp_stack()
 
-    assert stack.stack_id == "firewarning-mvp-a40-v1"
-    assert stack.hardware.gpu == "NVIDIA A40"
-    assert stack.hardware.vram_gib == 48
+    assert stack.stack_id == "fireviewer-lab-bonsai2-24g-v1"
+    assert stack.hardware.gpu == "NVIDIA L4"
+    assert stack.hardware.vram_gib == 24
     assert stack.hardware.dtype == "bfloat16"
     assert stack.hardware.attention == "flash_attention_2"
-    assert stack.hardware.quantization == "none"
+    assert stack.hardware.quantization == "judge_ptq1_0_other_models_bfloat16"
     assert stack.hardware.execution == "strictly_sequential"
     assert stack.hardware.maximum_large_models_in_vram == 1
     assert stack.auto_publication is False
@@ -61,11 +61,11 @@ def test_every_current_runtime_model_is_represented_by_the_frozen_stack() -> Non
         assert (spec.model_id, spec.revision) in manifest_models
 
 
-def test_large_final_judge_is_pinned_qwen3_14b() -> None:
+def test_final_judge_is_pinned_bonsai2() -> None:
     stack = load_mvp_stack()
 
-    assert stack.judge.candidate.model_id == "Qwen/Qwen3-14B"
-    assert stack.judge.candidate.revision == "40c069824f4251a91eefaf281ebe4c544efd3e18"
+    assert stack.judge.candidate.model_id == "prism-ml/Ternary-Bonsai-2-27B-gguf"
+    assert stack.judge.candidate.revision == "6ed5e12bf84b7a63069882c91dd9e9218647d17b"
     assert stack.judge.visual_disagreement_without_direct_evidence == "abstain"
 
 
@@ -74,3 +74,11 @@ def test_deferred_experimental_models_are_absent_from_the_mvp_manifest() -> None
 
     for deferred in ("artifixer", "locateanything", "vipe", "cosmos", "a6000"):
         assert deferred not in payload
+
+
+def test_historical_profile_remains_readable_for_audit() -> None:
+    stack = load_mvp_stack("a40-v1")
+    assert stack.stack_id == "firewarning-mvp-a40-v1"
+    assert stack.hardware.vram_gib == 48
+    assert stack.judge.candidate.model_id == "Qwen/Qwen3-14B"
+    assert stack.auto_publication is False

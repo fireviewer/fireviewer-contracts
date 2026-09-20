@@ -1,0 +1,430 @@
+{
+  "schema_version": "1.0",
+  "stack_id": "fireviewer-lab-bonsai2-24g-v1",
+  "status": "experimental",
+  "hardware": {
+    "gpu": "NVIDIA L4",
+    "vram_gib": 24,
+    "minimum_system_ram_gib": 48,
+    "dtype": "bfloat16",
+    "attention": "flash_attention_2",
+    "quantization": "judge_ptq1_0_other_models_bfloat16",
+    "execution": "strictly_sequential",
+    "maximum_large_models_in_vram": 1
+  },
+  "judge": {
+    "candidate": {
+      "candidate_id": "judge.bonsai2_27b_ptq1",
+      "model_id": "prism-ml/Ternary-Bonsai-2-27B-gguf",
+      "source": "huggingface",
+      "revision": "6ed5e12bf84b7a63069882c91dd9e9218647d17b",
+      "rank": 1,
+      "status": "integrated",
+      "provisioned_by_mvp": true,
+      "current_candidate": true,
+      "notes": [
+        "Laboratory substitution requested by the user: Bonsai 2 PTQ1_0 (~5.95 GB) with Q8 vision projector.",
+        "Same judge for baseline and all individual Jev variants; no production qualification.",
+        "Candidate-only JSON; abstains on missing evidence, audio or incomplete image window."
+      ]
+    },
+    "confidence_threshold": 0.65,
+    "supported_evidence": [
+      "structured_outputs",
+      "source_text",
+      "source_images"
+    ],
+    "visual_disagreement_without_direct_evidence": "abstain"
+  },
+  "stages": [
+    {
+      "stage_id": "source_research",
+      "activation": "open",
+      "policy": "single_with_rules",
+      "candidates": [
+        {
+          "candidate_id": "research.qwen3_14b",
+          "model_id": "Qwen/Qwen3-14B",
+          "source": "huggingface",
+          "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+          "rank": 1,
+          "status": "integrated",
+          "provisioned_by_mvp": true,
+          "current_candidate": true
+        }
+      ],
+      "outputs": [
+        "source_candidates"
+      ]
+    },
+    {
+      "stage_id": "asr",
+      "activation": "open",
+      "policy": "single_with_rules",
+      "candidates": [
+        {
+          "candidate_id": "asr.whisper_large_v3_turbo",
+          "model_id": "openai/whisper-large-v3-turbo",
+          "source": "huggingface",
+          "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+          "rank": 1,
+          "status": "integrated",
+          "provisioned_by_mvp": true,
+          "current_candidate": true
+        }
+      ],
+      "outputs": [
+        "transcript"
+      ]
+    },
+    {
+      "stage_id": "fire_detection",
+      "activation": "open",
+      "policy": "quorum",
+      "candidates": [
+        {
+          "candidate_id": "detection.dfine_firewarning",
+          "model_id": "ustc-community/dfine-xlarge-coco",
+          "source": "huggingface",
+          "revision": "ea4f6be7350bbe3c199ec6febc74168346cb5a68",
+          "rank": 1,
+          "status": "integrated",
+          "provisioned_by_mvp": true,
+          "current_candidate": true,
+          "notes": [
+            "User-authorized standard D-FINE COCO substitute; no fire or smoke class. RT-DETR FireViewer unchanged. Experimental comparison stack."
+          ]
+        },
+        {
+          "candidate_id": "detection.rtdetr_firewarning",
+          "model_id": "fireviewer/rtdetr-v2-r50-fire-smoke",
+          "source": "huggingface",
+          "revision": "27ca0bcdebdb1b9b860932fc4935513a5dfc7652",
+          "rank": 2,
+          "status": "integrated",
+          "provisioned_by_mvp": true,
+          "current_candidate": false,
+          "notes": [
+            "Second trained detector; every result is retained for contradiction detection."
+          ]
+        },
+        {
+          "candidate_id": "detection.pyronear_yolo11s",
+          "model_id": "pyronear/yolo11s_quick-quokka_v8.0.0",
+          "source": "huggingface",
+          "revision": "086799292e7e84a6ff8bd6394a5011575a6400ea",
+          "rank": 3,
+          "status": "benchmark_required",
+          "notes": [
+            "Deferred benchmark candidate; absent from the runtime image."
+          ]
+        }
+      ],
+      "outputs": [
+        "detection_regions"
+      ],
+      "judge_on_contradiction": true,
+      "activation_requirements": []
+    },
+    {
+      "stage_id": "fire_pointing",
+      "activation": "closed",
+      "policy": "cascade",
+      "candidates": [
+        {
+          "candidate_id": "pointing.florence_2_large_ft",
+          "model_id": "florence-community/Florence-2-large-ft",
+          "source": "huggingface",
+          "revision": "26b734a54fdfbf9c398351eedfabb7f27fc470b7",
+          "rank": 1,
+          "status": "baseline_only",
+          "provisioned_by_mvp": true,
+          "notes": [
+            "Offline comparison only; it is not an active pointing runtime fallback."
+          ]
+        },
+        {
+          "candidate_id": "pointing.qwen3_5_9b_verifier",
+          "model_id": "Qwen/Qwen3.5-9B",
+          "source": "huggingface",
+          "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+          "rank": 2,
+          "status": "integration_required",
+          "notes": [
+            "Verifier only; it must never emit geographic coordinates from pixels."
+          ]
+        }
+      ],
+      "outputs": [
+        "fire_point_pixel"
+      ],
+      "judge_on_contradiction": true,
+      "activation_requirements": [
+        "A replacement FireViewer checkpoint passes the external support-grade pointing benchmark.",
+        "Geographic coordinates require confirmed camera/ray/MNT projection."
+      ]
+    },
+    {
+      "stage_id": "visible_front_segmentation",
+      "activation": "closed",
+      "policy": "quorum",
+      "candidates": [
+        {
+          "candidate_id": "front.sam2_1",
+          "model_id": "SAM2.1",
+          "source": "huggingface",
+          "rank": 1,
+          "status": "integration_required"
+        },
+        {
+          "candidate_id": "front.segformer_b5_firewarning",
+          "model_id": "SegFormer-B5 adapted FireWarning",
+          "source": "local_bundle",
+          "rank": 2,
+          "status": "training_required"
+        }
+      ],
+      "outputs": [
+        "visible_front_mask"
+      ],
+      "judge_on_contradiction": true,
+      "activation_requirements": [
+        "Mask IoU, contour distance and component checks pass on the frozen test set."
+      ]
+    },
+    {
+      "stage_id": "cross_view_coarse",
+      "activation": "closed",
+      "policy": "quorum",
+      "candidates": [
+        {
+          "candidate_id": "cross_view.congeo",
+          "model_id": "eceo-epfl/ConGeo",
+          "source": "source_repository",
+          "source_repository": "https://github.com/eceo-epfl/ConGeo",
+          "revision": "52ab846f44f54231bb5828a5e3dd8137b2fed06d",
+          "rank": 1,
+          "status": "training_required"
+        },
+        {
+          "candidate_id": "cross_view.plgeo",
+          "model_id": "1203ll/PLGeo",
+          "source": "source_repository",
+          "source_repository": "https://github.com/1203ll/PLGeo",
+          "revision": "10338027c50ab2a10c7990c07efed9582e604504",
+          "rank": 2,
+          "status": "training_required"
+        }
+      ],
+      "outputs": [
+        "cross_view_window"
+      ],
+      "judge_on_contradiction": true,
+      "activation_requirements": [
+        "Independent rural and mountain domains pass the frozen geolocation benchmark."
+      ]
+    },
+    {
+      "stage_id": "local_correspondence",
+      "activation": "closed",
+      "policy": "quorum",
+      "candidates": [
+        {
+          "candidate_id": "correspondence.aerial_mast3r",
+          "model_id": "Aerial-MASt3R",
+          "source": "huggingface",
+          "rank": 1,
+          "status": "integration_required"
+        },
+        {
+          "candidate_id": "correspondence.romav2",
+          "model_id": "RoMaV2",
+          "source": "huggingface",
+          "rank": 2,
+          "status": "benchmark_required"
+        },
+        {
+          "candidate_id": "correspondence.aerial_extrematch_roma",
+          "model_id": "AerialExtreMatch-RoMa",
+          "source": "local_bundle",
+          "revision": "048ab96f84430f3e0f1144f05c94fe1e1f0bca8a",
+          "rank": 3,
+          "status": "baseline_only",
+          "provisioned_by_mvp": true,
+          "notes": [
+            "Provisioned baseline remains disabled because its acceptance benchmark fails."
+          ]
+        }
+      ],
+      "outputs": [
+        "camera_pose"
+      ],
+      "judge_on_contradiction": true,
+      "activation_requirements": [
+        "Inliers, residuals, cheirality and MNT intersection all pass.",
+        "The critical cross-view test set is double validated."
+      ]
+    },
+    {
+      "stage_id": "spatial_projection",
+      "activation": "open",
+      "policy": "single_with_rules",
+      "candidates": [
+        {
+          "candidate_id": "projection.pnp_ransac_ray_mnt",
+          "model_id": "FireWarning PnP-RANSAC-ray-MNT",
+          "source": "deterministic",
+          "revision": "spatial-geometry-v2",
+          "rank": 1,
+          "status": "integrated",
+          "provisioned_by_mvp": true,
+          "current_candidate": true,
+          "notes": [
+            "Direct path requires a human-confirmed camera pose; otherwise it abstains."
+          ]
+        }
+      ],
+      "outputs": [
+        "spatial_point"
+      ]
+    },
+    {
+      "stage_id": "satellite_hotspots",
+      "activation": "closed",
+      "policy": "deterministic_fusion",
+      "candidates": [
+        {
+          "candidate_id": "hotspots.firms_viirs_slstr",
+          "model_id": "FIRMS-VIIRS-SLSTR adapters",
+          "source": "sensor_adapter",
+          "rank": 1,
+          "status": "integration_required"
+        }
+      ],
+      "outputs": [
+        "observed_hotspot"
+      ],
+      "activation_requirements": [
+        "Acquisition time, footprint, FRP and sensor confidence are preserved."
+      ]
+    },
+    {
+      "stage_id": "burned_area",
+      "activation": "open",
+      "policy": "cascade",
+      "candidates": [
+        {
+          "candidate_id": "burned_area.prithvi_eo_2",
+          "model_id": "ibm-nasa-geospatial/Prithvi-EO-2.0-300M-BurnScars",
+          "source": "huggingface",
+          "revision": "a3f2c410e45b8ac7417976614528a872f024d831",
+          "rank": 1,
+          "status": "integrated",
+          "provisioned_by_mvp": true,
+          "current_candidate": true
+        },
+        {
+          "candidate_id": "burned_area.terramind_1",
+          "model_id": "ibm-esa-geospatial/TerraMind-base-Fire",
+          "source": "huggingface",
+          "revision": "6eb5178aac4f8a4191796258ae26e796195cc00d",
+          "rank": 2,
+          "status": "benchmark_required"
+        }
+      ],
+      "outputs": [
+        "observed_burned_perimeter"
+      ],
+      "activation_requirements": [
+        "Input is a signed six-band georeferenced reflectance GeoTIFF in the canonical band order.",
+        "Cloud and temporal-consistency gates pass; incompatible or absent products make only this auxiliary stage not applicable.",
+        "This stage never blocks RGB satellite imagery, thermal products, hotspot processing, evidence fusion or the daily report."
+      ]
+    },
+    {
+      "stage_id": "probable_activity",
+      "activation": "closed",
+      "policy": "deterministic_fusion",
+      "candidates": [
+        {
+          "candidate_id": "activity.probabilistic_fusion",
+          "model_id": "FireWarning probabilistic evidence fusion",
+          "source": "deterministic",
+          "rank": 1,
+          "status": "integration_required"
+        },
+        {
+          "candidate_id": "activity.forefire",
+          "model_id": "ForeFire",
+          "source": "simulation",
+          "rank": 2,
+          "status": "integration_required",
+          "notes": [
+            "Scenario only; it never becomes an observed front or perimeter."
+          ]
+        }
+      ],
+      "outputs": [
+        "probable_activity_envelope",
+        "simulated_spread_scenario"
+      ],
+      "activation_requirements": [
+        "Observed, inferred and simulated geometries remain separate in storage and UI."
+      ]
+    },
+    {
+      "stage_id": "multimodal_extraction",
+      "activation": "open",
+      "policy": "single_with_rules",
+      "candidates": [
+        {
+          "candidate_id": "facts.qwen3_5_9b",
+          "model_id": "Qwen/Qwen3.5-9B",
+          "source": "huggingface",
+          "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+          "rank": 1,
+          "status": "integrated",
+          "provisioned_by_mvp": true,
+          "current_candidate": true
+        }
+      ],
+      "outputs": [
+        "fact_set"
+      ]
+    },
+    {
+      "stage_id": "situation_report",
+      "activation": "closed",
+      "policy": "cascade",
+      "candidates": [
+        {
+          "candidate_id": "report.qwen3_5_9b",
+          "model_id": "Qwen/Qwen3.5-9B",
+          "source": "huggingface",
+          "revision": "c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+          "rank": 1,
+          "status": "integration_required"
+        },
+        {
+          "candidate_id": "report.qwen3_14b",
+          "model_id": "Qwen/Qwen3-14B",
+          "source": "huggingface",
+          "revision": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+          "rank": 2,
+          "status": "integration_required"
+        }
+      ],
+      "outputs": [
+        "situation_report"
+      ],
+      "judge_on_contradiction": true,
+      "activation_requirements": [
+        "Every reported fact has an exact source passage and as-of-compatible date.",
+        "Contradictions and unknowns are preserved for human review."
+      ]
+    }
+  ],
+  "auto_publication": false,
+  "human_validation_required": true,
+  "private_results_on_abstention": true
+}

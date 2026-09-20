@@ -142,12 +142,12 @@ class MvpStage(StrictModel):
 
 
 class MvpHardware(StrictModel):
-    gpu: Literal["NVIDIA A40"]
-    vram_gib: Literal[48]
-    minimum_system_ram_gib: int = Field(ge=64, le=256)
+    gpu: Literal["NVIDIA A40", "NVIDIA L4"]
+    vram_gib: Literal[24, 48]
+    minimum_system_ram_gib: int = Field(ge=48, le=256)
     dtype: Literal["bfloat16"]
     attention: Literal["flash_attention_2"]
-    quantization: Literal["none"]
+    quantization: Literal["none", "judge_ptq1_0_other_models_bfloat16"]
     execution: Literal["strictly_sequential"]
     maximum_large_models_in_vram: Literal[1]
 
@@ -155,13 +155,13 @@ class MvpHardware(StrictModel):
 class MvpJudge(StrictModel):
     candidate: MvpCandidate
     confidence_threshold: float = Field(ge=0.5, le=1.0)
-    supported_evidence: tuple[Literal["structured_outputs", "source_text"], ...]
+    supported_evidence: tuple[Literal["structured_outputs", "source_text", "source_images"], ...]
     visual_disagreement_without_direct_evidence: Literal["abstain"]
 
     @model_validator(mode="after")
     def validate_judge(self) -> MvpJudge:
-        if self.candidate.model_id != "Qwen/Qwen3-14B":
-            raise ValueError("the frozen MVP judge is Qwen3-14B")
+        if self.candidate.model_id not in {"prism-ml/Ternary-Bonsai-2-27B-gguf", "Qwen/Qwen3-14B"}:
+            raise ValueError("unsupported consensus judge model")
         if self.candidate.status != ImplementationStatus.INTEGRATED:
             raise ValueError("the frozen MVP judge must be integrated")
         if not self.candidate.provisioned_by_mvp:
@@ -171,8 +171,8 @@ class MvpJudge(StrictModel):
 
 class MvpStack(StrictModel):
     schema_version: Literal["1.0"]
-    stack_id: Literal["firewarning-mvp-a40-v1"]
-    status: Literal["frozen"]
+    stack_id: Literal["fireviewer-lab-bonsai2-24g-v1", "firewarning-mvp-a40-v1"]
+    status: Literal["experimental", "frozen"]
     hardware: MvpHardware
     judge: MvpJudge
     stages: tuple[MvpStage, ...] = Field(min_length=1)
@@ -196,9 +196,12 @@ class MvpStack(StrictModel):
         return self
 
 
-@lru_cache(maxsize=1)
-def load_mvp_stack() -> MvpStack:
-    resource = files("fireviewer_contracts.mvp_stack_data").joinpath("a40-v1.json")
+@lru_cache(maxsize=2)
+def load_mvp_stack(profile: Literal["bonsai2-l4-v1", "a40-v1"] = "bonsai2-l4-v1") -> MvpStack:
+    """Load the current profile, or the historical A40 manifest for audit/replay."""
+    if profile not in {"bonsai2-l4-v1", "a40-v1"}:
+        raise ValueError("unknown MVP profile")
+    resource = files("fireviewer_contracts.mvp_stack_data").joinpath(profile + ".json")
     return MvpStack.model_validate_json(resource.read_text(encoding="utf-8"))
 
 
