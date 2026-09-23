@@ -10,5 +10,6 @@
   "producer_ui": false,
   "limits": [
     "CPU/offline code qualification only; no models, GPU, deployed services or native Unreal qualification."
-  ]
+  ],
+  "source_date_epoch": 1790121600
 }

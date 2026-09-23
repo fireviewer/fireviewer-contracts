@@ -59,6 +59,7 @@ def npm(*args: str, cwd: Path = ROOT) -> None:
 
 def verify() -> None:
     CACHE.mkdir(exist_ok=True)
+    os.environ["SOURCE_DATE_EPOCH"] = str(CONFIG["source_date_epoch"])
     audit_tracked_files()
     dependencies = private_dependencies()
     reports = ROOT / "ci-results"
@@ -68,7 +69,7 @@ def verify() -> None:
     kind = CONFIG["kind"]
     if kind == "python":
         build_env, test_env = CACHE / "build", CACHE / "test"
-        run("uv", "venv", str(build_env), "--python", sys.executable)
+        run("uv", "venv", str(build_env), "--allow-existing", "--python", sys.executable)
         run("uv", "pip", "sync", "--python", python_at(build_env), "--require-hashes",
             "requirements.build.lock.txt")
         run("uv", "build", "--wheel", "--sdist", "--no-build-isolation", "--python", python_at(build_env),
@@ -84,7 +85,7 @@ def verify() -> None:
             re.sub(r"[-_.]+", "-", block.split("==", 1)[0]).lower() == own_name))
         requirements = CACHE / "requirements.tests.txt"
         requirements.write_text(filtered)
-        run("uv", "venv", str(test_env), "--python", sys.executable)
+        run("uv", "venv", str(test_env), "--allow-existing", "--python", sys.executable)
         run("uv", "pip", "sync", "--python", python_at(test_env), "--require-hashes",
             "--find-links", str(dependencies),
             "--find-links", "https://download.pytorch.org/whl/cpu/torch/",
@@ -93,6 +94,7 @@ def verify() -> None:
         if len(wheels) != 1:
             raise SystemExit("Expected one freshly built component wheel")
         run("uv", "pip", "install", "--python", python_at(test_env), "--no-deps", str(wheels[0]))
+        run("uv", "pip", "check", "--python", python_at(test_env))
         # -I excludes CWD/PYTHONPATH; overriding pytest's legacy pythonpath avoids
         # testing src/ while advertising a successful wheel installation.
         run(python_at(test_env), "-I", "-m", "pytest", "-o", "pythonpath=",

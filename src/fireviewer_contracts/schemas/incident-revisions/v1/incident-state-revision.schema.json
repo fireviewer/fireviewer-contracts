@@ -1,0 +1,526 @@
+{
+  "$defs": {
+    "EvidenceRevisionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "revision",
+        "content_sha256"
+      ],
+      "title": "EvidenceRevisionRef",
+      "type": "object"
+    },
+    "FireProbabilityGridReference": {
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "fireviewer.fire-probability-grid.v1",
+          "default": "fireviewer.fire-probability-grid.v1",
+          "title": "Schema",
+          "type": "string"
+        },
+        "cog_uri": {
+          "maxLength": 2048,
+          "minLength": 8,
+          "title": "Cog Uri",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "byte_count": {
+          "exclusiveMinimum": 0,
+          "title": "Byte Count",
+          "type": "integer"
+        },
+        "crs": {
+          "const": "EPSG:2154",
+          "default": "EPSG:2154",
+          "title": "Crs",
+          "type": "string"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "maximum": 4000000,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "maximum": 4000000,
+          "title": "Height",
+          "type": "integer"
+        },
+        "resolution_m": {
+          "exclusiveMinimum": 0,
+          "maximum": 250,
+          "title": "Resolution M",
+          "type": "number"
+        },
+        "transform": {
+          "maxItems": 6,
+          "minItems": 6,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Transform",
+          "type": "array"
+        },
+        "band_mapping": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "propertyNames": {
+            "enum": [
+              "affected",
+              "active",
+              "observable"
+            ]
+          },
+          "title": "Band Mapping",
+          "type": "object"
+        },
+        "persistence": {
+          "const": "durable_immutable",
+          "default": "durable_immutable",
+          "title": "Persistence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cog_uri",
+        "sha256",
+        "byte_count",
+        "width",
+        "height",
+        "resolution_m",
+        "transform",
+        "band_mapping"
+      ],
+      "title": "FireProbabilityGridReference",
+      "type": "object"
+    },
+    "FireSpatialProvenanceGridReference": {
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "fireviewer.fire-spatial-provenance-grid.v1",
+          "default": "fireviewer.fire-spatial-provenance-grid.v1",
+          "title": "Schema",
+          "type": "string"
+        },
+        "cog_uri": {
+          "maxLength": 2048,
+          "minLength": 8,
+          "title": "Cog Uri",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "byte_count": {
+          "exclusiveMinimum": 0,
+          "title": "Byte Count",
+          "type": "integer"
+        },
+        "crs": {
+          "const": "EPSG:2154",
+          "default": "EPSG:2154",
+          "title": "Crs",
+          "type": "string"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "maximum": 4000000,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "maximum": 4000000,
+          "title": "Height",
+          "type": "integer"
+        },
+        "resolution_m": {
+          "exclusiveMinimum": 0,
+          "maximum": 250,
+          "title": "Resolution M",
+          "type": "number"
+        },
+        "transform": {
+          "maxItems": 6,
+          "minItems": 6,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Transform",
+          "type": "array"
+        },
+        "band_mapping": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "propertyNames": {
+            "enum": [
+              "observed_support",
+              "multi_source_support",
+              "prior_interpolated_support",
+              "uncertainty_support"
+            ]
+          },
+          "title": "Band Mapping",
+          "type": "object"
+        },
+        "encoding": {
+          "const": "support_probability_and_masks_v1",
+          "default": "support_probability_and_masks_v1",
+          "title": "Encoding",
+          "type": "string"
+        },
+        "persistence": {
+          "const": "durable_immutable",
+          "default": "durable_immutable",
+          "title": "Persistence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cog_uri",
+        "sha256",
+        "byte_count",
+        "width",
+        "height",
+        "resolution_m",
+        "transform",
+        "band_mapping"
+      ],
+      "title": "FireSpatialProvenanceGridReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "fireviewer.incident-state-revision.v1",
+      "default": "fireviewer.incident-state-revision.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "revision_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Revision Id",
+      "type": "string"
+    },
+    "incident_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "valid_from": {
+      "format": "date-time",
+      "title": "Valid From",
+      "type": "string"
+    },
+    "valid_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Valid Until"
+    },
+    "knowledge_cutoff": {
+      "format": "date-time",
+      "title": "Knowledge Cutoff",
+      "type": "string"
+    },
+    "reconstruction_mode": {
+      "enum": [
+        "causal",
+        "retrospective"
+      ],
+      "title": "Reconstruction Mode",
+      "type": "string"
+    },
+    "calculated_at": {
+      "format": "date-time",
+      "title": "Calculated At",
+      "type": "string"
+    },
+    "parent_revision_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Revision Id"
+    },
+    "supersedes_revision_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Supersedes Revision Id"
+    },
+    "affected_geometry": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Affected Geometry"
+    },
+    "active_geometry": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Active Geometry"
+    },
+    "uncertainty_geometry": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Uncertainty Geometry"
+    },
+    "observable_fraction": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Observable Fraction"
+    },
+    "probability_grid": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FireProbabilityGridReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "provenance_grid": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/FireSpatialProvenanceGridReference"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "evidence_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EvidenceRevisionRef"
+      },
+      "maxItems": 20000,
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "algorithm_id": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Algorithm Id",
+      "type": "string"
+    },
+    "algorithm_revision": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Algorithm Revision",
+      "type": "string"
+    },
+    "fusion_profile_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Fusion Profile Sha256",
+      "type": "string"
+    },
+    "spatial_context_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Spatial Context Sha256",
+      "type": "string"
+    },
+    "seed_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Seed Id",
+      "type": "string"
+    },
+    "source_input_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Source Input Sha256",
+      "type": "string"
+    },
+    "quality": {
+      "enum": [
+        "observed",
+        "fused",
+        "interpolated",
+        "insufficient"
+      ],
+      "title": "Quality",
+      "type": "string"
+    },
+    "calibration_state": {
+      "default": "uncalibrated",
+      "enum": [
+        "uncalibrated",
+        "calibrated"
+      ],
+      "title": "Calibration State",
+      "type": "string"
+    },
+    "limitations": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 256,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "human_review_state": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "title": "Human Review State",
+      "type": "string"
+    },
+    "publication_state": {
+      "default": "unpublished",
+      "enum": [
+        "unpublished",
+        "published",
+        "withdrawn"
+      ],
+      "title": "Publication State",
+      "type": "string"
+    }
+  },
+  "required": [
+    "revision_id",
+    "incident_id",
+    "episode_id",
+    "valid_from",
+    "knowledge_cutoff",
+    "reconstruction_mode",
+    "calculated_at",
+    "algorithm_id",
+    "algorithm_revision",
+    "fusion_profile_sha256",
+    "spatial_context_sha256",
+    "seed_id",
+    "source_input_sha256",
+    "quality"
+  ],
+  "title": "IncidentStateRevision",
+  "type": "object",
+  "$id": "urn:fireviewer.incident-state-revision.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

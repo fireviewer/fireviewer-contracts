@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "EvidenceRevisionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "revision",
+        "content_sha256"
+      ],
+      "title": "EvidenceRevisionRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "fireviewer.incident-update-request.v1",
+      "default": "fireviewer.incident-update-request.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "incident_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "trigger": {
+      "enum": [
+        "evidence",
+        "correction",
+        "withdrawal",
+        "expiry",
+        "manual"
+      ],
+      "title": "Trigger",
+      "type": "string"
+    },
+    "valid_at": {
+      "format": "date-time",
+      "title": "Valid At",
+      "type": "string"
+    },
+    "knowledge_cutoff": {
+      "format": "date-time",
+      "title": "Knowledge Cutoff",
+      "type": "string"
+    },
+    "reconstruction_mode": {
+      "default": "retrospective",
+      "enum": [
+        "causal",
+        "retrospective"
+      ],
+      "title": "Reconstruction Mode",
+      "type": "string"
+    },
+    "expected_current_revision_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expected Current Revision Id"
+    },
+    "changed_evidence_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EvidenceRevisionRef"
+      },
+      "maxItems": 4096,
+      "title": "Changed Evidence Refs",
+      "type": "array"
+    },
+    "idempotency_key": {
+      "maxLength": 128,
+      "minLength": 8,
+      "title": "Idempotency Key",
+      "type": "string"
+    }
+  },
+  "required": [
+    "incident_id",
+    "episode_id",
+    "trigger",
+    "valid_at",
+    "knowledge_cutoff",
+    "idempotency_key"
+  ],
+  "title": "IncidentUpdateRequest",
+  "type": "object",
+  "$id": "urn:fireviewer.incident-update-request.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

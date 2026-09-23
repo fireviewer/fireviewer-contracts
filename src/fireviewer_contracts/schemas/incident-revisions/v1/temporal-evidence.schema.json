@@ -1,0 +1,505 @@
+{
+  "$defs": {
+    "ProcessingStep": {
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "enum": [
+            "vision",
+            "ocr",
+            "transcription",
+            "geolocation",
+            "supervisor",
+            "fusion"
+          ],
+          "title": "Component",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "required",
+            "completed",
+            "not_applicable",
+            "blocked"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component",
+        "status",
+        "reason"
+      ],
+      "title": "ProcessingStep",
+      "type": "object"
+    },
+    "SpatialObservationV2": {
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "fireviewer.spatial-observation.v2",
+          "default": "fireviewer.spatial-observation.v2",
+          "title": "Schema",
+          "type": "string"
+        },
+        "observation_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "observation_kind": {
+          "enum": [
+            "thermal_footprint",
+            "burned_probability",
+            "active_probability",
+            "valid_negative",
+            "camera_ray",
+            "camera_ground_intersection",
+            "official_perimeter",
+            "modelled_perimeter"
+          ],
+          "title": "Observation Kind",
+          "type": "string"
+        },
+        "target_state": {
+          "enum": [
+            "affected",
+            "active",
+            "both"
+          ],
+          "title": "Target State",
+          "type": "string"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "observed_end_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observed End At"
+        },
+        "available_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Available At"
+        },
+        "geometry_geojson": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Geometry Geojson"
+        },
+        "raster_uri": {
+          "anyOf": [
+            {
+              "maxLength": 2048,
+              "minLength": 8,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Raster Uri"
+        },
+        "coverage_geojson": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Geojson"
+        },
+        "probability": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Probability",
+          "type": "number"
+        },
+        "observability_probability": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observability Probability"
+        },
+        "resolution_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 100000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resolution M"
+        },
+        "horizontal_accuracy_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "maximum": 1000000,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Horizontal Accuracy M"
+        },
+        "source_family_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "title": "Source Family Id",
+          "type": "string"
+        },
+        "lineage_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$",
+          "title": "Lineage Id",
+          "type": "string"
+        },
+        "upstream_product_id": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Upstream Product Id",
+          "type": "string"
+        },
+        "source_revision_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Revision Sha256",
+          "type": "string"
+        },
+        "processor_revision": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Processor Revision",
+          "type": "string"
+        },
+        "calibration_state": {
+          "default": "uncalibrated",
+          "enum": [
+            "uncalibrated",
+            "calibrated"
+          ],
+          "title": "Calibration State",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 512,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "published_reference_accessed": {
+          "const": false,
+          "default": false,
+          "title": "Published Reference Accessed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "observation_id",
+        "observation_kind",
+        "target_state",
+        "observed_at",
+        "probability",
+        "source_family_id",
+        "lineage_id",
+        "upstream_product_id",
+        "source_revision_sha256",
+        "processor_revision"
+      ],
+      "title": "SpatialObservationV2",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "fireviewer.temporal-evidence.v1",
+      "default": "fireviewer.temporal-evidence.v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "evidence_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Evidence Id",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "incident_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+      "title": "Incident Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "anyOf": [
+        {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Episode Id"
+    },
+    "source_id": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Source Id",
+      "type": "string"
+    },
+    "content_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Sha256",
+      "type": "string"
+    },
+    "license": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "License",
+      "type": "string"
+    },
+    "access": {
+      "default": "private",
+      "enum": [
+        "private",
+        "public"
+      ],
+      "title": "Access",
+      "type": "string"
+    },
+    "public_derivative_allowed": {
+      "default": true,
+      "title": "Public Derivative Allowed",
+      "type": "boolean"
+    },
+    "admissibility": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "admitted",
+        "rejected",
+        "withdrawn"
+      ],
+      "title": "Admissibility",
+      "type": "string"
+    },
+    "media_kind": {
+      "enum": [
+        "geometry",
+        "image",
+        "video",
+        "text",
+        "audio",
+        "satellite"
+      ],
+      "title": "Media Kind",
+      "type": "string"
+    },
+    "observed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Observed At"
+    },
+    "observed_until": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Observed Until"
+    },
+    "time_precision": {
+      "default": "instant",
+      "enum": [
+        "instant",
+        "interval",
+        "unknown"
+      ],
+      "title": "Time Precision",
+      "type": "string"
+    },
+    "published_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Published At"
+    },
+    "available_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Available At"
+    },
+    "retrieved_at": {
+      "format": "date-time",
+      "title": "Retrieved At",
+      "type": "string"
+    },
+    "recorded_at": {
+      "format": "date-time",
+      "title": "Recorded At",
+      "type": "string"
+    },
+    "observations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SpatialObservationV2"
+      },
+      "maxItems": 4096,
+      "title": "Observations",
+      "type": "array"
+    },
+    "needs_human_review": {
+      "default": false,
+      "title": "Needs Human Review",
+      "type": "boolean"
+    },
+    "supersedes_revision": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Supersedes Revision"
+    },
+    "enrichment_state": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "completed",
+        "abstained",
+        "failed"
+      ],
+      "title": "Enrichment State",
+      "type": "string"
+    },
+    "enrichment_receipt_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Enrichment Receipt Sha256"
+    },
+    "processing": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ProcessingStep"
+      },
+      "maxItems": 64,
+      "title": "Processing",
+      "type": "array"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "revision",
+    "incident_id",
+    "source_id",
+    "content_sha256",
+    "license",
+    "media_kind",
+    "retrieved_at",
+    "recorded_at"
+  ],
+  "title": "TemporalEvidence",
+  "type": "object",
+  "$id": "urn:fireviewer.temporal-evidence.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

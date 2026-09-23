@@ -115,6 +115,26 @@
       "source": "fireviewer-geo-contracts\\README.md",
       "path": "geography/v1/README.md",
       "sha256": "027713db8252ce28586fec354ece70d7f0f05dd9bd992cece36d5494e000ffac"
+    },
+    {
+      "source": "backend/incident_state_schemas.py",
+      "path": "incident-revisions/v1/temporal-evidence.schema.json",
+      "sha256": "c260f276997116647fa0c7b232461df78934340aa98f9ea374fc0c656cf883ac"
+    },
+    {
+      "source": "backend/incident_state_schemas.py",
+      "path": "incident-revisions/v1/incident-state-revision.schema.json",
+      "sha256": "3bf771af13ea134aa9d63e9bbbc16753cca62efab94da0d38607811e3c59a84c"
+    },
+    {
+      "source": "backend/incident_state_schemas.py",
+      "path": "incident-revisions/v1/incident-update-request.schema.json",
+      "sha256": "c2747095806942ea341ab1c6361fe107a1d8a6e2588a76dc3e304155528832ee"
+    },
+    {
+      "source": "backend/incident_state_schemas.py",
+      "path": "incident-revisions/v1/incident-update-result.schema.json",
+      "sha256": "e96917aa9f60bad5be5fefcc911005d524444384aa811893a5556616e11d4b51"
     }
   ]
 }
